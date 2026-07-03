@@ -55,57 +55,30 @@ function find(id, j) {
 /**
  * @param {Object}    args
  * @param {String}    args.id     ID de usuario patrocinador
- * @param {String}    args.i      Nivel actual (0 como inicial)
- * @param {Number[]}  args.arr    Lista de montos para el patrocinador
+ * @param {Number}    args.value  Monto a pagar
  * @param {String}    args.aff_id ID de afiliacion
  * @param {String}    args._id    ID del usuario actual
  * @returns {Promise<void>}
  */
-async function pay_bonus({ id, i, arr, value, aff_id, _id }) {
+async function pay_bonus({ id, value, aff_id, _id }) {
   const user = users.find((e) => e.id == id)
-  const node = tree.find((e) => e.id == id)
+  if (!user) return
 
-  if (i <= user.n - 1) {
+  const txId = rand()
 
-    const id = rand()
+  await Transaction.insert({
+    id: txId,
+    date: new Date(),
+    user_id: user.id,
+    type: 'in',
+    value: value,
+    n: 1,
+    name: 'affiliation bonus',
+    affiliation_id: aff_id,
+    _user_id: _id,
+  })
 
-    await Transaction.insert({
-      id,
-      date: new Date(),
-      user_id: user.id,
-      type: 'in',
-      value: value / 2,
-      n: i + 1,
-      name: 'affiliation bonus',
-      affiliation_id: aff_id,
-      _user_id: _id,
-    })
-
-    pays.push(id)
-
-    // if (arr[i]) {
-    //   const id = rand()
-
-    //   await Transaction.insert({
-    //     id,
-    //     date: new Date(),
-    //     user_id: user.id,
-    //     type: 'in',
-    //     value: arr[i] / 2,
-    //     n: i + 1,
-    //     name: 'affiliation bonus',
-    //     affiliation_id: aff_id,
-    //     _user_id: _id,
-    //   })
-
-    //   pays.push(id)
-    // }
-  }
-
-  // if (i == 1 || !node.parent) return
-  if (i == 0 || !node.parent) return
-
-  pay_bonus({ id: node.parent, i: i + 1, arr, value, aff_id, _id })
+  pays.push(txId)
 }
 
 /**
@@ -287,13 +260,11 @@ const handler = async (req, res) => {
 
         pays = []
 
-        const plan = affiliation.plan.id
+        const bonusValue = (affiliation.price || 0) * 0.40
 
         await pay_bonus({
           id: user.parentId,
-          i: 0,
-          arr: pay[plan],
-          value: pay[plan][0],
+          value: bonusValue,
           aff_id: affiliation.id,
           _id: user.id,
         })
