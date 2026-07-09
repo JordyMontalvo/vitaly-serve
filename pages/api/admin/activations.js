@@ -280,16 +280,8 @@ export default async (req, res) => {
 
       await User.update({ id: user.id }, { points: user.points })
 
-      const _activated = activateByConfig(
-        platform_configs,
-        '_activated_default',
-        user.points
-      )
-      const activated = activateByConfig(
-        platform_configs,
-        'activated_default',
-        user.points
-      )
+      const _activated = user.points >= 50
+      const activated = user.points >= 150
 
       await User.update(
         { id: user.id },
