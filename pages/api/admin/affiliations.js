@@ -58,9 +58,10 @@ function find(id, j) {
  * @param {Number}    args.value  Monto a pagar
  * @param {String}    args.aff_id ID de afiliacion
  * @param {String}    args._id    ID del usuario actual
+ * @param {Boolean}   args.virtual Si es saldo no disponible
  * @returns {Promise<void>}
  */
-async function pay_bonus({ id, value, aff_id, _id }) {
+async function pay_bonus({ id, value, aff_id, _id, virtual = false }) {
   const user = users.find((e) => e.id == id)
   if (!user) return
 
@@ -76,6 +77,7 @@ async function pay_bonus({ id, value, aff_id, _id }) {
     name: 'affiliation bonus',
     affiliation_id: aff_id,
     _user_id: _id,
+    virtual: virtual,
   })
 
   pays.push(txId)
@@ -260,14 +262,32 @@ const handler = async (req, res) => {
 
         pays = []
 
-        const bonusValue = (affiliation.price || 0) * 0.40
+        const bonusValueLevel1 = (affiliation.price || 0) * 0.40
+        const bonusValueLevel2 = (affiliation.price || 0) * 0.10
 
+        // Nivel 1: 40%
         await pay_bonus({
           id: user.parentId,
-          value: bonusValue,
+          value: bonusValueLevel1,
           aff_id: affiliation.id,
           _id: user.id,
         })
+
+        // Nivel 2: 10%
+        const parentUser = users.find((u) => u.id === user.parentId)
+        if (parentUser && parentUser.parentId) {
+          const grandParentUser = users.find((u) => u.id === parentUser.parentId)
+          if (grandParentUser) {
+            const isVirtual = !grandParentUser.activated
+            await pay_bonus({
+              id: grandParentUser.id,
+              value: bonusValueLevel2,
+              aff_id: affiliation.id,
+              _id: user.id,
+              virtual: isVirtual,
+            })
+          }
+        }
 
         // tree = await Tree.find({})
 
@@ -310,15 +330,15 @@ const handler = async (req, res) => {
       )
 
       // migrar transaccinoes virtuales
-      // const transactions = await Transaction.find({
-      //   user_id: user.id,
-      //   virtual: true,
-      // })
+      const transactions = await Transaction.find({
+        user_id: user.id,
+        virtual: true,
+      })
 
-      // for (let transaction of transactions) {
-      //   console.log({ transaction })
-      //   await Transaction.update({ id: transaction.id }, { virtual: false })
-      // }
+      for (let transaction of transactions) {
+        console.log({ transaction })
+        await Transaction.update({ id: transaction.id }, { virtual: false })
+      }
 
       // PROFIT OFFICE
       let office_profit_total = office.profit ? office.profit : 0

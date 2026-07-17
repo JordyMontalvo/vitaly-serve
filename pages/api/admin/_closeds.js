@@ -760,11 +760,36 @@ export default async (req, res) => {
         { closed: true }
       )
 
-      // delete virtual transactions
-      const virtualTransactions = await Transaction.find({ virtual: true })
+      // expire virtual transactions
+      const virtualTransactions = await Transaction.find({ virtual: true, closed: { $ne: true } })
+
+      const usersVirtualBalance = {}
+      for (let transaction of virtualTransactions) {
+        if (!usersVirtualBalance[transaction.user_id]) {
+           usersVirtualBalance[transaction.user_id] = 0
+        }
+        if (transaction.type === 'in') usersVirtualBalance[transaction.user_id] += transaction.value
+        else if (transaction.type === 'out') usersVirtualBalance[transaction.user_id] -= transaction.value
+      }
+
+      for (let userId in usersVirtualBalance) {
+        const bal = usersVirtualBalance[userId]
+        if (bal > 0) {
+           await Transaction.insert({
+             id: rand(),
+             date: new Date(),
+             user_id: userId,
+             type: 'out',
+             value: bal,
+             name: 'vencimiento de ciclo',
+             virtual: true,
+             closed: true
+           })
+        }
+      }
 
       for (let transaction of virtualTransactions) {
-        await Transaction.delete({ id: transaction.id })
+        await Transaction.update({ id: transaction.id }, { closed: true })
       }
     }
 

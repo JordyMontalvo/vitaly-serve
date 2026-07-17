@@ -120,11 +120,15 @@ export default async (req, res) => {
 
     if (check) {
       const balanceByAffiliate = _balance_aff < price ? _balance_aff : price // descuento de saldo bono por afiliados
-      let r = price - _balance_aff > 0 ? price - _balance_aff : 0
+      let r = price - balanceByAffiliate
+
       const balanceUnavailable = _balance < r ? _balance : r // descuento de saldo no disponle
-      r = price - _balance > 0 ? price - _balance : 0
+      r = r - balanceUnavailable
+
       const balanceAvailable = balance < r ? balance : r // descuento de saldo disponle
-      const realCost = price - balanceUnavailable - balanceByAffiliate
+      r = r - balanceAvailable
+
+      const realCost = r
       console.log({
         balanceByAffiliate,
         balanceUnavailable,

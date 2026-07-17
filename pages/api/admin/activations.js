@@ -180,18 +180,18 @@ export default async (req, res) => {
         )
       }
 
-      // if (activated) {
-      //   // migrar transaccinoes virtuales
-      //   const transactions = await Transaction.find({
-      //     user_id: user.id,
-      //     virtual: true,
-      //   })
+      if (activated) {
+        // migrar transaccinoes virtuales
+        const transactions = await Transaction.find({
+          user_id: user.id,
+          virtual: true,
+        })
 
-      //   for (let transaction of transactions) {
-      //     console.log({ transaction })
-      //     await Transaction.update({ id: transaction.id }, { virtual: false })
-      //   }
-      // }
+        for (let transaction of transactions) {
+          console.log({ transaction })
+          await Transaction.update({ id: transaction.id }, { virtual: false })
+        }
+      }
 
       // UPDATE STOCK
       console.log('UPDATE STOCK ...')
