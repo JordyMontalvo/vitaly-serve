@@ -622,6 +622,13 @@ class Office {
     await db.collection('offices').updateOne(query, { $inc: values })
     return client.close()
   }
+  async delete(query) {
+    const client = new Client(URL, { useUnifiedTopology: true })
+    const conn = await client.connect()
+    const db = conn.db(name)
+    await db.collection('offices').deleteOne(query)
+    return client.close()
+  }
 }
 
 class Recharge {

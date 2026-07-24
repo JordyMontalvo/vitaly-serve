@@ -86,6 +86,27 @@ export default async (req, res) => {
 
     }
 
+    if (req.body.action === 'create') {
+      const { office } = req.body
+      const newOffice = {
+        id: lib.rand(),
+        email: office.email || '',
+        password: office.password || '',
+        name: office.name || '',
+        address: office.address || '',
+        accounts: office.accounts || '',
+        products: []
+      }
+      await Office.insert(newOffice)
+      return res.json(success())
+    }
+
+    if (req.body.action === 'delete') {
+      const { id } = req.body
+      await Office.delete({ id })
+      return res.json(success())
+    }
+
     if (office) {
       console.log(' update office ', office)
       await Office.update(
