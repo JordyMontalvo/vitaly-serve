@@ -11,6 +11,7 @@ const {
   Tree,
   Transaction,
   PlatformConfig,
+  AffiliationBanner,
 } = db
 const { error, success, midd, rand, acum } = lib
 
@@ -56,6 +57,16 @@ export default async (req, res) => {
 
   // get PLANS
   let plans = await Plan.find({})
+
+  // get AFFILIATION BANNERS and inject into plans
+  const affBanners = await AffiliationBanner.find({})
+  plans = plans.map(plan => {
+    const banner = affBanners.find(b => b.planId === plan.id)
+    if (banner && banner.imgUrl) {
+      plan.img = banner.imgUrl
+    }
+    return plan
+  })
 
   // get PRODUCTS
   const products = await Product.find({})
