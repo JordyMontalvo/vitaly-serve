@@ -14,6 +14,54 @@ let tree = []
 const ranks = [
   // Ordenarlos de forma descendente al rango
   {
+    pos: 8,
+    rank: 'DIAMANTE CORONA',
+    type_calculation: 'rank_dependency',
+    minimum_frontals: 3,
+    threshold_points: 1476000, // M
+    maximum_large_leg: 492000, // M1
+    maximum_others_leg: 492000, // M2
+    rank_dependencies: [
+      {
+        rank: 'DIAMANTE',
+        minimum: 2,
+        diff_branch: false,
+      },
+    ],
+  },
+  {
+    pos: 7,
+    rank: 'DIAMANTE',
+    type_calculation: 'rank_dependency',
+    minimum_frontals: 3,
+    threshold_points: 491850, // M
+    maximum_large_leg: 163950, // M1
+    maximum_others_leg: 163950, // M2
+    rank_dependencies: [
+      {
+        rank: 'ESMERALDA',
+        minimum: 2,
+        diff_branch: false,
+      },
+    ],
+  },
+  {
+    pos: 6,
+    rank: 'ESMERALDA',
+    type_calculation: 'rank_dependency',
+    minimum_frontals: 3,
+    threshold_points: 163800, // M
+    maximum_large_leg: 54600, // M1
+    maximum_others_leg: 54600, // M2
+    rank_dependencies: [
+      {
+        rank: 'RUBÍ',
+        minimum: 2,
+        diff_branch: false,
+      },
+    ],
+  },
+  {
     pos: 5,
     rank: 'RUBÍ',
     type_calculation: 'rank_dependency',
