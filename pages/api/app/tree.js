@@ -128,14 +128,14 @@ export default async (req, res) => {
   // for (let node of tree)
   //   if (Dashboardjs.is_rank(node, 'DIAMANTE')) node.rank = 'DIAMANTE' // -> RUBI, PLATINO, PLATINO
   // for (let node of tree)
-  //   if (Dashboardjs.is_rank(node, 'EMBAJADOR ESTRELLA'))
-  //     node.rank = 'EMBAJADOR ESTRELLA' // -> ZAFIRO, RUBI, RUBI
+  //   if (Dashboardjs.is_rank(node, 'RUBÍ'))
+  //     node.rank = 'RUBÍ' // -> ZAFIRO, RUBI, RUBI
   // for (let node of tree)
   //   if (Dashboardjs.is_rank(node, 'EMBAJADOR ELITE'))
   //     node.rank = 'EMBAJADOR ELITE' // -> DIAMANTE, ZAFIRO, ZAFIRO, RUBI
   // for (let node of tree)
   //   if (Dashboardjs.is_rank(node, 'EMBAJADOR DUNAMIS'))
-  //     node.rank = 'EMBAJADOR DUNAMIS' // -> EMBAJADOR ELITE, EMBAJADOR ESTRELLA, DIAMANTE, DIAMANTE
+  //     node.rank = 'EMBAJADOR DUNAMIS' // -> EMBAJADOR ELITE, RUBÍ, DIAMANTE, DIAMANTE
 
   // for (let node of tree) Dashboardjs.next_rank(node)
 

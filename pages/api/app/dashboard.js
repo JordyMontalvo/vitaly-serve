@@ -15,7 +15,7 @@ const ranks = [
   // Ordenarlos de forma descendente al rango
   {
     pos: 5,
-    rank: 'EMBAJADOR ESTRELLA',
+    rank: 'RUBÍ',
     type_calculation: 'rank_dependency',
     minimum_frontals: 3,
     threshold_points: 54450, // M
@@ -23,7 +23,7 @@ const ranks = [
     maximum_others_leg: 18150, // M2
     rank_dependencies: [
       {
-        rank: 'EMBAJADOR VISIONARIO',
+        rank: 'ZAFIRO',
         minimum: 2,
         diff_branch: false,
       },
@@ -31,7 +31,7 @@ const ranks = [
   },
   {
     pos: 4,
-    rank: 'EMBAJADOR VISIONARIO',
+    rank: 'ZAFIRO',
     type_calculation: 'rank_dependency',
     minimum_frontals: 3,
     threshold_points: 18000, // M
@@ -39,7 +39,7 @@ const ranks = [
     maximum_others_leg: 6000, // M2
     rank_dependencies: [
       {
-        rank: 'EJECUTIVO - PLATA',
+        rank: 'PLATA',
         minimum: 1,
         diff_branch: false,
       },
@@ -47,7 +47,7 @@ const ranks = [
   },
   {
     pos: 3,
-    rank: 'EJECUTIVO - ORO',
+    rank: 'ORO',
     type_calculation: 'simple',
     minimum_frontals: 3,
     threshold_points: 5850, // M
@@ -57,7 +57,7 @@ const ranks = [
   },
   {
     pos: 2,
-    rank: 'EJECUTIVO - PLATA',
+    rank: 'PLATA',
     type_calculation: 'simple',
     minimum_frontals: 3,
     threshold_points: 1800, // M

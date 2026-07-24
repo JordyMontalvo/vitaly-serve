@@ -36,7 +36,7 @@ function levels() {
     if (node.rank == 'RUBI') node.levels = 7
     if (node.rank == 'ZAFIRO') node.levels = 8
     if (node.rank == 'DIAMANTE') node.levels = 9
-    if (node.rank == 'EMBAJADOR ESTRELLA') node.levels = 10
+    if (node.rank == 'RUBÍ') node.levels = 10
     if (node.rank == 'EMBAJADOR ELITE') node.levels = 11
   }
 }
@@ -238,7 +238,7 @@ const is_rank = (node, rank) => {
     if (find_rank(_id, 'RUBI')) countChildRank._RUBI += 1
     if (find_rank(_id, 'ZAFIRO')) countChildRank._ZAFIRO += 1
     if (find_rank(_id, 'DIAMANTE')) countChildRank._DIAMANTE += 1
-    if (find_rank(_id, 'EMBAJADOR ESTRELLA'))
+    if (find_rank(_id, 'RUBÍ'))
       countChildRank._EMBAJADOR_ESTRELLA += 1
     if (find_rank(_id, 'EMBAJADOR ELITE')) countChildRank._EMBAJADOR_ELITE += 1
     if (find_rank(_id, 'EMBAJADOR DUNAMIS'))
@@ -277,7 +277,7 @@ const is_rank = (node, rank) => {
         return true
       }
       break
-    case 'EMBAJADOR ESTRELLA':
+    case 'RUBÍ':
       if (
         total >= M &&
         n >= 3 &&
@@ -630,14 +630,14 @@ export default async (req, res) => {
   for (let node of tree)
     if (exportClosedJs.is_rank(node, 'DIAMANTE')) node.rank = 'DIAMANTE' // -> RUBI, PLATINO, PLATINO
   for (let node of tree)
-    if (exportClosedJs.is_rank(node, 'EMBAJADOR ESTRELLA'))
-      node.rank = 'EMBAJADOR ESTRELLA' // -> ZAFIRO, RUBI, RUBI
+    if (exportClosedJs.is_rank(node, 'RUBÍ'))
+      node.rank = 'RUBÍ' // -> ZAFIRO, RUBI, RUBI
   for (let node of tree)
     if (exportClosedJs.is_rank(node, 'EMBAJADOR ELITE'))
       node.rank = 'EMBAJADOR ELITE' // -> DIAMANTE, ZAFIRO, ZAFIRO, RUBI
   for (let node of tree)
     if (exportClosedJs.is_rank(node, 'EMBAJADOR DUNAMIS'))
-      node.rank = 'EMBAJADOR DUNAMIS' // -> EMBAJADOR ELITE, EMBAJADOR ESTRELLA, DIAMANTE, DIAMANTE
+      node.rank = 'EMBAJADOR DUNAMIS' // -> EMBAJADOR ELITE, RUBÍ, DIAMANTE, DIAMANTE
 
   if (currentNode) next_rank(currentNode)
 
