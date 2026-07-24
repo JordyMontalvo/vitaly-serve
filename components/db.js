@@ -25,6 +25,7 @@ class DB {
     Closed,
     Tool,
     ToolsSocial,
+    AffiliationBanner,
   }) {
     this.PlatformConfig = PlatformConfig
     this.User = User
@@ -46,6 +47,7 @@ class DB {
     this.Closed = Closed
     this.Tool = Tool
     this.ToolsSocial = ToolsSocial
+    this.AffiliationBanner = AffiliationBanner
   }
 }
 
@@ -252,6 +254,31 @@ class Banner {
     const conn = await client.connect()
     const db = conn.db(name)
     await db.collection('banner').updateOne(query, { $set: values })
+    return client.close()
+  }
+}
+
+class AffiliationBanner {
+  async find(query) {
+    const client = new Client(URL, { useUnifiedTopology: true })
+    const conn = await client.connect()
+    const db = conn.db(name)
+    const banners = await db.collection('affiliation_banners').find(query).toArray()
+    client.close()
+    return banners
+  }
+  async insert(banner) {
+    const client = new Client(URL, { useUnifiedTopology: true })
+    const conn = await client.connect()
+    const db = conn.db(name)
+    await db.collection('affiliation_banners').insertOne(banner)
+    return client.close()
+  }
+  async delete(query) {
+    const client = new Client(URL, { useUnifiedTopology: true })
+    const conn = await client.connect()
+    const db = conn.db(name)
+    await db.collection('affiliation_banners').deleteOne(query)
     return client.close()
   }
 }
@@ -787,4 +814,5 @@ export default new DB({
   Closed: new Closed(),
   Tool: new Tool(),
   ToolsSocial: new ToolsSocial(),
+  AffiliationBanner: new AffiliationBanner(),
 })
