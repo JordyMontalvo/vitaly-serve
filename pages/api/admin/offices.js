@@ -95,6 +95,7 @@ export default async (req, res) => {
         name: office.name || '',
         address: office.address || '',
         accounts: office.accounts || '',
+        qr_image: office.qr_image || '',
         products: []
       }
       await Office.insert(newOffice)
@@ -117,6 +118,7 @@ export default async (req, res) => {
           name: office.name,
           address: office.address,
           accounts: office.accounts,
+          qr_image: office.qr_image !== undefined ? office.qr_image : '',
         }
       )
     }
