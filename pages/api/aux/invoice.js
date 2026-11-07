@@ -68,6 +68,9 @@ const Invoice = async (req, res) => {
   const office = activation ? await Office.findOne({ id: activation.office }) : await Office.findOne({ id: affiliation.office })
 
 
+  const points = activation ? (activation.points || 0) : (affiliation ? (affiliation.points || (affiliation.plan ? affiliation.plan.points : 0)) : 0)
+  const price  = activation ? activation.price : (affiliation ? (affiliation.plan ? affiliation.plan.amount : 0) : 0)
+
   // response
   return res.json(success({
     products,
@@ -75,6 +78,8 @@ const Invoice = async (req, res) => {
     office,
     date,
     pay_method,
+    points,
+    price,
   }))
 }
 
